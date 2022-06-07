@@ -4,14 +4,13 @@ import Button from './shared/Button'
 import RatingSelect from './RatingSelect'
 
 
-const FeedbackForm = () => {
+const FeedbackForm = ({ handleAdd } ) => {
     const [text, setText] = useState('')
     const [rating, setRating] = useState(10)
     const [btnDisabled, setBtnDisabled] = useState(true)
     const [message, setMessage] = useState('')
 
-
-    const handleTextChange = (e) => {
+const handleTextChange = ( { target: { value }} ) => {
         //text === nothing then button disabled no message
 if(text === '') {
     setBtnDisabled(true)
@@ -27,16 +26,34 @@ if(text === '') {
     setBtnDisabled(false)
 }
 
-        setText(e.target.value)
+        setText(value)
     }
+
+
+const handleSubmit = (e) => {
+    e.preventDefault()
+    if(text.trim().length >= 10){
+        const newFeedback = {
+            //shorthand for text: text valeue is from state
+            text: text,
+            rating: rating,
+        }
+        handleAdd(newFeedback)
+        setText('')
+    }
+}
 
   return (
     <Card>
-        <form>
+        <form onSubmit={handleSubmit}>
             <h2>How would you rate your service with us?</h2>
-            <RatingSelect />
+            <RatingSelect select={setRating} selected={rating}/>
             <div className="input-group">
-                <input onChange={handleTextChange} type="text" placeholder="Write a review" value={text}/>
+                <input 
+                onChange={handleTextChange} 
+                type="text" 
+                placeholder="Write a review" 
+                value={text} />
                 <Button isDisabled={btnDisabled} type='submit'>Send</Button>
             </div>
         {/* if theres a massage then lets have a div with classname message and render message*/}
@@ -45,5 +62,6 @@ if(text === '') {
     </Card>
   )
 }
+// }
 
-export default FeedbackForm
+  export default FeedbackForm
