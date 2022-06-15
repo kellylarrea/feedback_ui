@@ -3,7 +3,7 @@ import React from 'react'
 const RatingSelect = ({ select, selected }) => {
 
     const handleChange = (e) =>{
-        select(+e.currentValue.target)
+        select(+e.target.value)
     }
 
   return (
